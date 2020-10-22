@@ -7138,8 +7138,7 @@ input.todo-search-field::-webkit-input-placeholder {
   margin: 1px 0 3px;
 }
 
-.login {
-  background: url(../images/login/imac.png) 0 0 no-repeat;
+.login {  
   background-size: 940px 778px;
   color: white;
   margin-bottom: 77px;
@@ -7221,12 +7220,6 @@ input.todo-search-field::-webkit-input-placeholder {
   font-size: 13px;
   margin-top: 15px;
   text-align: center;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 3 / 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 2) {
-  .login {
-    background-image: url(../images/login/imac-2x.png);
-  }
 }
 
 .pallete-item {

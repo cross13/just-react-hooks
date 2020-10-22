@@ -8,28 +8,33 @@ import {
 
 import './App.css';
 
-import BeerFactory from './examples/beer-factory';
+import BeerFactory from './examples/beer-factory/beer-factory';
+import HeroView from './examples/hero-list/hero-view';
 
 const App = () => {
   return (
     <div className="App">
-      <Router>
-        <header className="App-header">
-          <div className="App-title">
-            <h3>JUST REACT HOOKS</h3>
-          </div>
-          <nav style={{ flex: 1, marginTop: 30, marginBottom: 15 }}>
-            <ul>
-              <li>
-                <Link to="/beer-factory">Beer Factory</Link> 
-              </li>
-            </ul>
-          </nav>
-        </header>
-        <Switch>
-          <Route path="/beer-factory" component={BeerFactory} />
-        </Switch>
-      </Router>
+        <Router>
+            <header className="App-header">
+                <div className="App-title">
+                    <h3>JUST REACT HOOKS</h3>
+                </div>
+                <nav style={{ flex: 1, marginTop: 30, marginBottom: 15 }}>
+                    <ul>
+                        <li>
+                            <Link to="/beer-factory">Beer Factory</Link> 
+                        </li>
+                        <li>
+                            <Link to="/hero-list">Hero List</Link> 
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <Switch>
+                <Route path="/beer-factory" component={BeerFactory} />
+                <Route path="/hero-list" component={HeroView} />
+            </Switch>
+        </Router>
     </div>
   );
 }
