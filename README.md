@@ -7,6 +7,65 @@ Desarrollar en componentes te permite partir la UI piezas (reusables e independi
 y asi poder analizar cada una de ellas aisladamente.
 [Components and Props](https://reactjs.org/docs/components-and-props.html)
 
+## Historia 
+
+ - React.createClass - No ES6 Clases - (autobinding) - (lifecycle)
+
+```javascript
+getInitialState() {
+    return: {
+        list: [],
+        loading: false
+    }
+}
+
+componentDidMount() {
+    // Hacer algo en el mount
+}
+
+```
+ - class MyComp extends React.Component - (no more autobinding) - (lifecycle)
+```javascript
+constructor() {
+    super(props); // Remember pass to super invo.
+    
+    this.state = {
+        list: [],
+        loading: false
+    }
+
+    this.loadList = this.loadList.bind(this) // Remember to bind your methods
+}
+
+componentDidMount() {
+    // Hacer algo en el mount
+}
+
+```
+ - Class Fields - class MyComp extends React.Component - (no more super and bind).
+ - Arrow function para nuestros metodos.
+ ```javascript
+ class MyComp extends React.Component {
+    state = {
+        list: [],
+        loading: false
+    }
+
+    componentDidMount() {
+        // Hacer algo en el mount
+    }
+ }
+ ```
+ - Functional components con Hooks =)
+ ```javascript
+ const [ loading, setLoading ] = React.useState();
+ 
+ React.useEffect(() => {
+    // Accionar ante un cambio del state || props
+ }, [loading])
+
+ ```
+
 ## Class & Functions
 
 Podemos definir componentes de react de dos formas:
@@ -21,7 +80,6 @@ const HelloWorld = (props) => {
     return <h1>Hello, {props.name}</h1>;
 }
 ```
-
 
 ### Class Components
 - Si tienen Ciclo de vida.
@@ -49,8 +107,8 @@ información dentro de nuestros Componentes
 
 
 ## Hooks
-En React 16.8 se agrego una nueva funcionalidad, la cual otorga el use de State dentro de componentes
-que no son Clases
+En React 16.8 se agrego una nueva funcionalidad, la cual otorga el uso de State dentro de componentes
+que no son Clases, entre otros Hooks.
 ```javascript
 const [toggle, setToggle] = useState(false);
 ```
@@ -59,6 +117,7 @@ const [toggle, setToggle] = useState(false);
  - Mayor reutilización de codigo
  - Mejor nivel de abstracción en mi codigo
  - Te permite pensar los componentes de una forma mas sencilla
+ - No mas problemas con ciclos de vida que chocan :(
 
 ## Tips to refactor Class Components into a Functional components.
 
