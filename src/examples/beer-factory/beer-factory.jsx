@@ -3,59 +3,73 @@ import * as React from 'react';
 import BeerActions from './beer-actions';
 import Counter from './counter';
 
-class BeerFactory extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            beer: 0,
-            sixPack: 0,
-            enableFactory: false,
-        }
-        this.addBeer = this.addBeer.bind(this);
-        this.removeBeer = this.removeBeer.bind(this);
-        this.sendTruck = this.sendTruck.bind(this);
+const ACTIONS = {
+    ADD_BEER: 'addBeer',
+    REMOVE_BEER: 'removeBeer',
+    SEND_TRUCK: 'sendTruck',
+    ENABLE_FACTORY: 'ENABLE_FACTORY'
+}
+
+const initialState = {
+    beer: 0,
+    sixPack: 0,
+    enableFactory: false
+}
+
+const addBeer = (state) => {
+    const { beer, sixPack } = state;
+    const isSixPack = beer === 5;
+    const beerCount = isSixPack ? 0 : beer + 1;
+    const sixPackCount = isSixPack ? sixPack + 1 : sixPack;
+
+    return { ...state, beer: beerCount, sixPack: sixPackCount };
+}
+
+const beerReducer = (state, action) => {
+    switch (action.type) {
+        case ACTIONS.ADD_BEER :
+            return addBeer(state);
+        case ACTIONS.REMOVE_BEER :
+            return { ...state, beer: state.beer - 1 }
+        case ACTIONS.SEND_TRUCK :
+            return { ...state, sixPack: 0 }
+        case ACTIONS.ENABLE_FACTORY :
+            return { ...state, enableFactory: true }
+        default:
+            return state;
     }
+}
 
-    componentDidUpdate() {
-        // Make Six
-        const { beer, sixPack } = this.state;
 
-        if (beer === 6) {
-            this.setState({
-                beer: 0,
-                sixPack: sixPack + 1,
-            });
-        }
-    }
+const BeerFactory = () => {
 
-    sendTruck() {
-        this.setState({sixPack: 0});
-    }
+    const [state, dispatch] = React.useReducer(beerReducer, initialState);
 
-    addBeer() {
-        this.setState({beer: this.state.beer + 1});
-    }
+    const { beer , sixPack, enableFactory } = state;
 
-    removeBeer() {
-        this.setState({beer: this.state.beer - 1});
-    }
+    const sendTruck = () => dispatch({ type: ACTIONS.SEND_TRUCK});
+    const addBeer = () => dispatch({ type: ACTIONS.ADD_BEER});
+    const removeBeer = () =>dispatch({ type: ACTIONS.REMOVE_BEER});
+    const setEnableFactory = () => dispatch({ type: ACTIONS.ENABLE_FACTORY});
 
-    render() {
-        const { beer, sixPack } = this.state;
-        console.log('BeerFactory - Render', beer);
+    const beerCounter = React.useMemo(() => <Counter title="Beers" counter={beer} id="BeerCounter" />, [beer]);
+    const SixPackCounter = React.useMemo(() => <Counter title="SixPack" counter={sixPack} id="SixPackCounter" />, [sixPack]);
 
-        return <div style={{marginTop: 50, width: 550}}>
+    return <div style={{marginTop: 50, width: 550}}>
+        { enableFactory && <>
             <div className="row demo-row" style={{margin: 50, width: 250}}>
-                <div className="col">
-                    <Counter title="Beers" counter={beer} id="BeerCounter" />
-                </div>
-                <div className="col">
-                    <Counter title="SixPack" counter={sixPack} id="SixPackCounter" />
-                </div>
+            <div className="col">
+                {beerCounter}
             </div>
-            <BeerActions addBeer={this.addBeer} removeBeer={this.removeBeer} sendTruck={this.sendTruck} />
-        </div>;
-    }
+            <div className="col">
+                {SixPackCounter}
+            </div>
+            </div>
+            <BeerActions addBeer={addBeer} removeBeer={removeBeer} sendTruck={sendTruck} />
+            </>
+        }
+        { !enableFactory && <button onClick={() => setEnableFactory(true)}>Turn On</button> }
+    </div>;
 }
 
 export default BeerFactory

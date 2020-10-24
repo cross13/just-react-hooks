@@ -13,7 +13,7 @@ y asi poder analizar cada una de ellas aisladamente.
 
 ```javascript
 getInitialState() {
-    return: {
+    return {
         list: [],
         loading: false
     }
@@ -55,6 +55,8 @@ componentDidMount() {
         // Hacer algo en el mount
     }
  }
+
+ 
  ```
  - Functional components con Hooks =)
  ```javascript
