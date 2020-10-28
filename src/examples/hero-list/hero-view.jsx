@@ -1,55 +1,33 @@
-import * as React from 'react';
-import axios from 'axios';
+import React, { useMemo, useState } from 'react';
 
 import HeroList from './hero-list';
 import Pagination, { paginate } from './pagination';
+import { useHerosList } from './useHeroList';
 
 const PAGE_SIZE = 10;
-const HEROES_API_ALL = 'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/all.json';
 
-class HeroView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            list: [],
-            loading: true,
-            currentPage: 1,
-            total: 0
-        };
-    }
+const HeroView = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedHero, setSelectedHero] = useState();
 
-    componentDidMount() {
-        axios.get(HEROES_API_ALL)
-        .then((response) => {
-            this.setState({
-                list: response.data,
-                total: parseInt(response.data / PAGE_SIZE)
-            })
-        })
-        .finally(() => {
-            this.setState({
-                loading: false
-            })
-        })
-    }
+  const { list, loading } = useHerosList();
 
+  const paginatedList = useMemo(() => paginate(list, PAGE_SIZE, currentPage), [list, currentPage]);
 
-    render() {
-        const { loading, list, currentPage } = this.state;
-
-        if (loading) {
-            return <div>Loading</div>;
-        }
-
-        return (
-            <>
-                <HeroList list={paginate(list, PAGE_SIZE, currentPage)} />
-                <Pagination current={currentPage} onClick={(curr) => this.setState({
-                    currentPage: curr
-                })} />
-            </>
+  return (
+    <>
+      { loading 
+        ? <div>Loading</div>
+        : (
+          <>
+            { selectedHero && <div>Selected: {selectedHero}</div> }
+            <HeroList setSelectedHero={setSelectedHero} list={paginatedList} />
+            <Pagination current={currentPage} onClick={setCurrentPage} />
+          </>
         )
-    }
+      }
+    </>
+  );
 }
 
 export default HeroView;
